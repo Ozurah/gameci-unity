@@ -31,7 +31,12 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: 'GameCI-Unity'
-
+          
+      - name: Cat Info
+        run: |
+          cat 'GameCI-Unity/Packages/manifest.json
+          cat 'GameCI-Unity/Packages/packages-lock.json
+          
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v4
