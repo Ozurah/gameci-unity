@@ -34,8 +34,8 @@ jobs:
           
       - name: Cat Info
         run: |
-          cat 'GameCI-Unity/Packages/manifest.json
-          cat 'GameCI-Unity/Packages/packages-lock.json
+          cat 'GameCI-Unity/Packages/manifest.json'
+          cat 'GameCI-Unity/Packages/packages-lock.json'
           
       # Build
       - name: Build project
