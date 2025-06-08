@@ -46,37 +46,38 @@ jobs:
           name: Tests result
           path: artifacts
 
-  # build:
-  #   name: Build my project ✨
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checkout
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         lfs: true
+  build:
+    if: env.ENABLE_BUILD == 'true'
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
 
-  #     # Cache
-  #     - uses: actions/cache@v3
-  #       with:
-  #         path: Library
-  #         key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-  #         restore-keys: |
-  #           Library-
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
-  #     # Build
-  #     - name: Build project
-  #       uses: game-ci/unity-builder@v4
-  #       env:
-  #         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  #         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-  #         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-  #       with:
-  #         projectPath: 'GameCI-Unity'
-  #         targetPlatform: WebGL
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: 'GameCI-Unity'
+          targetPlatform: WebGL
 
-  #     # Output
-  #     - uses: actions/upload-artifact@v4
-  #       with:
-  #         name: Build
-  #         path: build
+      # Output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Build
+          path: build
