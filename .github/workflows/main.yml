@@ -22,7 +22,7 @@ jobs:
             Library-
 
       # Test
-      - name: Run tests
+      - name: Run tests 🧫
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -34,14 +34,16 @@ jobs:
           coverageOptions: 'useProjectSettings'
         
       # Output
-      - uses: actions/upload-artifact@v4
+      - name: Coverage result 🔮
+        uses: actions/upload-artifact@v4
         with:
-          name: Coverage 🔮
+          name: Coverage
           path: CodeCoverage
 
-      - uses: actions/upload-artifact@v4
+      - name: Tests result 🪄
+        uses: actions/upload-artifact@v4
         with:
-          name: Tests result 🪄
+          name: Tests result
           path: artifacts
 
   # build:
