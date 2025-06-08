@@ -31,7 +31,8 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: 'GameCI-Unity'
-  
+          coverageOptions: 'useProjectSettings'
+          
   build:
     name: Build my project ✨
     runs-on: ubuntu-latest
