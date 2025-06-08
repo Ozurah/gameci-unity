@@ -4,6 +4,11 @@
 
 *.drawio.bkp
 
+# Ignore temporaries from GameCI
+
+/[Aa]rtifacts/
+
+
 
 # ======================= Official ignore List ======================= 
 
