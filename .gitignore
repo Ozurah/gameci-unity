@@ -7,7 +7,7 @@
 # Ignore temporaries from GameCI
 
 /[Aa]rtifacts/
-
+/[Cc]odeCoverage/
 
 
 # ======================= Official ignore List ======================= 
