@@ -35,12 +35,14 @@ jobs:
         
       # Output
       - name: Coverage result 🔮
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: Coverage
           path: CodeCoverage
 
       - name: Tests result 🪄
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: Tests result
