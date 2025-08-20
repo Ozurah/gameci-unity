@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Test my project 🧪
+    name: Recherche CSProjet
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -32,9 +32,11 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: 'GameCI-Unity'
 
-      - name: Cat Info
-        run: |
-          ls
-          ls 'GameCI-Unity/'
-          find . -name '*.csproj'
-          cat 'GameCI-Unity/Scripts.csproj'
+      - name: Dir list
+        run: ls
+      - name: Dir list Unity proj
+        run: ls 'GameCI-Unity/'
+      - name: csproj list
+        run: find . -name '*.csproj'
+      - name: cat script csproj
+        run: cat 'GameCI-Unity/Scripts.csproj'
