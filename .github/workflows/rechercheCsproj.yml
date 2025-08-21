@@ -35,7 +35,7 @@ jobs:
           buildMethod: UnityEditor.SyncVS.SyncSolution
 
       - name: Logs ?
-        run ls -la 'GameCI-Unity/Logs/'
+        run: ls -la 'GameCI-Unity/Logs/'
       - name: Wait 1.5min
         run: sleep 90
       - name: Dir list
