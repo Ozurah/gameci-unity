@@ -31,14 +31,13 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: 'GameCI-Unity2'
+          projectPath: 'GameCI-Unity'
           buildMethod: UnityEditor.SyncVS.SyncSolution
 
-
       - name: Dir list
-        run: ls
+        run: ls -la
       - name: Dir list Unity proj
-        run: ls 'GameCI-Unity/'
+        run: ls -la 'GameCI-Unity/'
       - name: csproj list
         run: find . -name '*.csproj'
       - name: cat script csproj
