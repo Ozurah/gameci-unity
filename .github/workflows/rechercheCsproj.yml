@@ -1,10 +1,10 @@
-name: Actions 😎
+name: Recherche CSProjet
 
 on: [push, pull_request]
 
 jobs:
   test:
-    name: Recherche CSProjet
+    name: Test my project 🧪
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -31,6 +31,17 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: 'GameCI-Unity'
+
+
+      - name: Generate solution-project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: 'GameCI-Unity'
+          customParameters: -executeMethod GitTools.Solution.Sync
 
       - name: Dir list
         run: ls
