@@ -32,7 +32,9 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: 'GameCI-Unity'
           coverageOptions: 'useProjectSettings'
-        
+
+      - name: Dll Unity présentes ?
+        run: find "/opt/unity/Editor/"
       # Output
       - name: Coverage result 🔮
         if: ${{ !cancelled() }}
