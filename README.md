@@ -209,3 +209,95 @@ J'ai donc mis une variable d'activation du job de build :
 Sélectionner les plateforme de builds via
 - la variable `TARGET_PLATFORMS_JSON` dans `Settings > Secrets and variables > Actions > Variables > Repository variables`
 
+
+# Génération des fichiers de solution/projet - `rechercheCsproj.yml`
+
+## But
+- Obtenir les fichier `csproj / sln`, s'ils doivent être référencer par un autre élément utilisé dans la CI
+
+## Remarques environement
+
+> Désactivation de ce workflow via GitHub, à réactiver temporairement en cas de besoin
+
+Tests fait sur la branche [`test/recherche-csproj`](https://github.com/Ozurah/gameci-unity/tree/test/recherche-csproj)
+
+## Elements clés du yml
+
+Pour générer les `csproj / sln` : 
+```yml
+      - name: Generate solution-project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: 'GameCI-Unity'
+          buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
+```
+
+Pour voir les fichiers générés :
+```yml
+      - name: Dir list Unity proj
+        run: ls -la 'GameCI-Unity/'
+```
+
+## Problème
+
+Si on référence les csproj pour d'autres projets, ils ne sont pas gité (gitignore, unity s'occupe de généré les fichiers `.csprof/.sln` quand nécessaire)
+
+Donc sur une CI, il ne sera pas possible d'avoir les référence sur les projets ...
+
+Il est donc nécessaire de la généré avant de les utiliser.
+
+Note : Le phase de test (`game-ci/unity-test-runner`) ne génère pas ces fichiers "`csproj / sln`"
+
+## Solution
+Pour générer les fichiers `.csproj / .sln` dans la CI, il faut passer par `Packages.Rider.Editor.RiderScriptEditor.SyncSolution`
+
+Solution trouvée :
+- https://www.reddit.com/r/Unity3D/comments/s1joc6/help_with_generating_csproj_and_sln_for_github/
+- Conseillé par un "maintainer" de unity-builder (l'action utilisée)
+
+(Le package de rider est à installer dans Unity, pour le projet il était déjà inclus même si j'ai pas rider sur mon PC !)
+
+Avoir dans le yml de l'action de build : `projectPath: 'GameCI-Unity'
+          buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution`
+
+````yml
+      - name: Generate solution-project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: 'GameCI-Unity'
+          buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
+````
+
+Commandes PS pour exécution en locale - `& "C:\Program Files\Unity\Hub\Editor\6000.1.5f1\Editor\Unity.exe"  --batchmode -nographics -logFile - -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution -projectPath "GameCI-Unity" -quit`
+
+Lien de la CI ayant réussie : 
+- `rechercheCsproj.yml` #15 - https://github.com/Ozurah/gameci-unity/actions/workflows/rechercheCsproj.yml
+- https://github.com/Ozurah/gameci-unity/actions/runs/17129071737
+
+## Tentatives
+Essaie sans utiliser rider, les fichiers ne se génère pas (même si en local ça fonctionne bien ...)
+
+Solutions essayées
+- https://discussions.unity.com/t/how-can-i-generate-csproj-files-during-continuous-integration-builds/842493
+  - Un script à ajouter dans `Assets\Editor` et l'appeler via le `buildMethod`, essayé via la CI, a terminé en erreur (j'ai pas investigué)
+- https://discussions.unity.com/t/any-way-to-tell-unity-to-generate-the-sln-file-via-script-or-command-line/620725/17
+  - Utiliser comme "`buildMethod`" : `UnityEditor.SyncVS.SyncSolution`
+  - Fonction native de Unity
+  - Fonctionne en local, pas sur la CI (ne génère pas les .csproj)
+  - Commandes PS pour exécution en locale - ` & "C:\Program Files\Unity\Hub\Editor\6000.1.5f1\Editor\Unity.exe"  --batchmode -nographics -logFile - -executeMethod UnityEditor.SyncVS_Workaround.SyncSolution -projectPath "GameCI-Unity" -quit`
+
+## Remarques
+
+Remarque : dans `gameci`, l'argument `buildMethod` correspond à celui qui est passé à `executeMethod` d'Unity, c'est donc le script à exécuter ! (le script doit être public static)
+
+Plus d'info sur le cli (et executeMethod) :
+- Unity : https://docs.unity3d.com/Manual/EditorCommandLineArguments.html
+- GameCI : https://game.ci/docs/github/builder#buildmethod
