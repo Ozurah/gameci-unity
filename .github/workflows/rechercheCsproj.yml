@@ -32,7 +32,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           projectPath: 'GameCI-Unity'
-          buildMethod: UnityEditor.SyncVS.SyncSolution
+          buildMethod: Packages.Rider.Editor.RiderScriptEditor.SyncSolution
 
       - name: Dir list workspace
         run: find '/github/workspace/'
@@ -46,6 +46,9 @@ jobs:
       - name: Dir list Repo
         run: find .
         continue-on-error: true
+      # - name: Dir list all
+        # run: find .
+        # continue-on-error: true
       - name: csproj list
         run: find . -name '*.csproj'
         continue-on-error: true
