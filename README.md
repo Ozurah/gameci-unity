@@ -301,3 +301,26 @@ Remarque : dans `gameci`, l'argument `buildMethod` correspond à celui qui est p
 Plus d'info sur le cli (et executeMethod) :
 - Unity : https://docs.unity3d.com/Manual/EditorCommandLineArguments.html
 - GameCI : https://game.ci/docs/github/builder#buildmethod
+
+
+
+# Comportement si un test échoue `main.yml`
+
+## But
+- Connaitre le comportement de la CI quand un test échoue
+- Exemple qui pourrais faire échouer : `Assert.fail` ou `assert.equal(10, 20)`
+
+## Remarques environement
+
+Tests fait sur la branche [`test/FailedTest`](https://github.com/Ozurah/gameci-unity/tree/test/FailedTest)
+
+## Observations
+
+Si un test échoue, l'étape (`step`) se termine en erreur
+Donc sauf si les suivantes sont configuré pour continuer, le `job` s'arrête !
+
+Lien de la CI ayant "réussie" : 
+- `main.yml` #27 - https://github.com/Ozurah/gameci-unity/actions/runs/17110501198
+  - Les artéfacts ont été générés
+- `main.yml` #25 - https://github.com/Ozurah/gameci-unity/actions/runs/17100308089/job/48495993774
+  - Les artéfacts n'ont pas été générés
