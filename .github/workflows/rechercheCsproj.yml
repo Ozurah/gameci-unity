@@ -29,7 +29,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           projectPath: 'GameCI-Unity'
-          buildMethod: GitTools.Solution.Sync
+          buildMethod: UnityEditor.SyncVS.SyncSolution
 
       - name: Dir list
         run: ls
