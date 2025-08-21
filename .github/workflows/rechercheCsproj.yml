@@ -35,11 +35,13 @@ jobs:
           buildMethod: UnityEditor.SyncVS.SyncSolution
 
       - name: Dir list workspace
-        run: ls -la '/github/workspace/GameCI-Unity'
+        run: find '/github/workspace/'
       - name: Dir list
         run: ls -la
       - name: Dir list Unity proj
         run: ls -la 'GameCI-Unity/'
+      - name: Dir list Repo
+        run: find .
       - name: csproj list
         run: find . -name '*.csproj'
       - name: cat script csproj
